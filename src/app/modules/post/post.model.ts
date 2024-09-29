@@ -11,10 +11,18 @@ const postSchema = new Schema<TPost>(
             type: String,
             required: true,
         },
-
+        category: {
+            type: String,
+            required: true,
+        },
         premium: {
             type: Boolean,
             default: false,
+        },
+        author: {
+            type: Schema.Types.ObjectId,
+            ref: "User", // Reference to User model
+            required: true,
         },
         upVotes: {
             type: Number,
