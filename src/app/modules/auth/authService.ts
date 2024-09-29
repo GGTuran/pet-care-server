@@ -7,54 +7,83 @@ import { TLoginUser } from "./auth.interface";
 import bcrypt from 'bcrypt';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
-const signUp = async(payload:TUser) => {
+const signUp = async (payload: TUser) => {
     const result = await User.create(payload);
-    return result;
-};
-
-const loginUser = async(payload:TLoginUser) => {
-    const user = await User.findOne({ email : payload?.email }).select('-createdAt -updatedAt -__v');
-    //checking if the user exist or not 
-    if(!user){
-        throw new AppError(400,'User does not exist!');
-    }
-
-    //matching the given password in database
-    const comparePassword = await bcrypt.compare(payload?.password, user?.password);
-    if(!comparePassword){
-        throw new AppError(404,'Password does not match!');
-    }
-
     //creating access token
     const jwtPayload = {
-        userId:user?._id,
-        email:user?.email,
-        role:user?.role,
-        name:user?.name,
-        phone:user?.phone,
-        address:user?.address,
+        userId: result?._id,
+        email: result?.email,
+        role: result?.role,
+        name: result?.name,
+        phone: result?.phone,
+        address: result?.address,
     };
 
-    const token = jwt.sign(jwtPayload, config.JWT_ACCESS_SECRET as string,{
-        expiresIn:config.jwt_access_expires_in,
+    const accessToken = jwt.sign(jwtPayload, config.JWT_ACCESS_SECRET as string, {
+        expiresIn: config.jwt_access_expires_in,
     });
 
     //creating refresh token
     const refreshPayload = {
-        userId:user?._id,
-        email:user?.email,
-        role:user?.role,
-        name:user?.name,
-        phone:user?.phone,
-        address:user?.address,
+        userId: result?._id,
+        email: result?.email,
+        role: result?.role,
+        name: result?.name,
+        phone: result?.phone,
+        address: result?.address,
     };
 
-    const refreshToken = jwt.sign(refreshPayload, config.JWT_REFRESH_SECRET as string,{
+    const refreshToken = jwt.sign(refreshPayload, config.JWT_REFRESH_SECRET as string, {
+        expiresIn: config.jwt_refresh_expires_in,
+    });
+
+
+    return { result, accessToken, refreshToken };
+};
+
+const loginUser = async (payload: TLoginUser) => {
+    const user = await User.findOne({ email: payload?.email }).select('-createdAt -updatedAt -__v');
+    //checking if the user exist or not 
+    if (!user) {
+        throw new AppError(400, 'User does not exist!');
+    }
+
+    //matching the given password in database
+    const comparePassword = await bcrypt.compare(payload?.password, user?.password);
+    if (!comparePassword) {
+        throw new AppError(404, 'Password does not match!');
+    }
+
+    //creating access token
+    const jwtPayload = {
+        userId: user?._id,
+        email: user?.email,
+        role: user?.role,
+        name: user?.name,
+        phone: user?.phone,
+        address: user?.address,
+    };
+
+    const accessToken = jwt.sign(jwtPayload, config.JWT_ACCESS_SECRET as string, {
+        expiresIn: config.jwt_access_expires_in,
+    });
+
+    //creating refresh token
+    const refreshPayload = {
+        userId: user?._id,
+        email: user?.email,
+        role: user?.role,
+        name: user?.name,
+        phone: user?.phone,
+        address: user?.address,
+    };
+
+    const refreshToken = jwt.sign(refreshPayload, config.JWT_REFRESH_SECRET as string, {
         expiresIn: config.jwt_refresh_expires_in,
     });
 
     return {
-        token,
+        accessToken,
         refreshToken,
         user,
     }
@@ -62,7 +91,7 @@ const loginUser = async(payload:TLoginUser) => {
 
 };
 
-const refreshToken = async (token:string) => {
+const refreshToken = async (token: string) => {
     const decoded = jwt.verify(
         token,
         config.JWT_REFRESH_SECRET as string,
@@ -72,20 +101,20 @@ const refreshToken = async (token:string) => {
 
     const user = await User.findById({ userId }).select('-createdAt -updatedAt -__v');
     //checking if the user exist or not 
-    if(!user){
-        throw new AppError(400,'User does not exist!');
+    if (!user) {
+        throw new AppError(400, 'User does not exist!');
     }
 
     const jwtPayload = {
-        userId:user?._id,
-        email:user?.email,
-        role:user?.role,
-        name:user?.name,
-        phone:user?.phone,
-        address:user?.address,
+        userId: user?._id,
+        email: user?.email,
+        role: user?.role,
+        name: user?.name,
+        phone: user?.phone,
+        address: user?.address,
     };
 
-    const accessToken = jwt.sign(jwtPayload, config.JWT_ACCESS_SECRET as string,{
+    const accessToken = jwt.sign(jwtPayload, config.JWT_ACCESS_SECRET as string, {
         expiresIn: config.jwt_access_expires_in,
     });
 

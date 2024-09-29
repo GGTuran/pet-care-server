@@ -6,11 +6,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 const auth = (...requiredRoles: TUserRoles[]) => {
     return catchAsync(async (req, res, next) => {
 
-        let token;
-        //because of  adding Bearer in the token,we need to split it for authorization
-        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-            token = req.headers.authorization.split(' ')[1];
-        }
+        const token = req.headers.authorization;
 
         //checking if the token is given or not 
         if (!token) {
