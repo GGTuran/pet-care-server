@@ -1,9 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { PostServices } from "./post.service";
 
 const CreatePost = catchAsync(async (req, res) => {
-    const result = await PostServices.CreatePostInDB(req.body);
+    console.log(req.body.data);
+    console.log(req.file);
+    const result = await PostServices.CreatePostInDB({
+        ...JSON.parse(req.body.data),
+        image: req.file?.path,
+    });
     sendResponse(res, {
         success: true,
         statusCode: 201,

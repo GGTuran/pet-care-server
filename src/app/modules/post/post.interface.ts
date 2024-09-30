@@ -5,8 +5,9 @@ export type TPost = {
     content: string;
     category: string;
     author: Types.ObjectId;
+    image: string;
     premium: boolean;
     upVotes: number;
     downVotes: number;
-    comments: string[];
+    comments?: string[];
 };

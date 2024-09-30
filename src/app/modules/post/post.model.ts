@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import { TPost } from "./post.interface";
 
+
 const postSchema = new Schema<TPost>(
     {
         title: {
@@ -18,6 +19,10 @@ const postSchema = new Schema<TPost>(
         premium: {
             type: Boolean,
             default: false,
+        },
+        image: {
+            type: String,
+            default: null,
         },
         author: {
             type: Schema.Types.ObjectId,
