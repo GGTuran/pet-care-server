@@ -8,7 +8,7 @@ const CreatePostInDB = async (postData: TPost) => {
 };
 
 const GetAllPostsFromDB = async () => {
-    const posts = await Post.find().populate("comments");
+    const posts = await Post.find().populate("comments").populate("author");
     return posts;
 };
 

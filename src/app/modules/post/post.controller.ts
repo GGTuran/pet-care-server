@@ -7,7 +7,7 @@ const CreatePost = catchAsync(async (req, res) => {
     console.log(req.body.data);
     console.log(req.file);
     const result = await PostServices.CreatePostInDB({
-        ...JSON.parse(req.body.data),
+        ...JSON.parse(req?.body?.data),
         image: req.file?.path,
     });
     sendResponse(res, {

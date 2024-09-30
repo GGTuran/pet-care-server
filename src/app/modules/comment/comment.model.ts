@@ -9,7 +9,8 @@ const commentSchema = new Schema<TComment>(
             required: true,
         },
         author: {
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: "User",
             required: true,
         },
         text: {
