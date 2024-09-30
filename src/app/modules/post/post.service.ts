@@ -12,6 +12,11 @@ const GetAllPostsFromDB = async () => {
     return posts;
 };
 
+const GetPostsById = async (id: string) => {
+    const posts = await Post.find({ author: id }).populate("comments").populate("author");
+    return posts;
+}
+
 const UpdatePostInDB = async (id: string, updateData: Partial<TPost>) => {
     const updatedPost = await Post.findByIdAndUpdate(id, updateData, {
         new: true,
@@ -62,4 +67,5 @@ export const PostServices = {
     DeletePostFromDB,
     UpVotePostInDB,
     DownVotePostInDB,
+    GetPostsById,
 };

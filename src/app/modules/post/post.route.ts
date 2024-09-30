@@ -13,6 +13,9 @@ router.post(
 
 
 router.get("/", PostControllers.GetAllPosts);
+
+router.get("/:id", PostControllers.GetPost)
+
 router.patch(
     "/:id",
     //  auth(USER_ROLE.admin),
@@ -23,6 +26,8 @@ router.delete(
     PostControllers.DeletePost);
 
 router.patch("/:id/upvote", PostControllers.UpvotePost);
+
+
 router.patch("/:id/downvote", PostControllers.DownvotePost);
 
 export const PostRoutes = router;

@@ -28,6 +28,19 @@ const GetAllPosts = catchAsync(async (req, res) => {
     });
 });
 
+const GetPost = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    // console.log(id, 'from controller')
+    // console.log(req.params, 'from controller')
+    const result = await PostServices.GetPostsById(id);
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Posts retrieved successfully",
+        data: result,
+    });
+});
+
 const UpdatePost = catchAsync(async (req, res) => {
     const { id } = req.params;
     const result = await PostServices.UpdatePostInDB(id, req.body);
@@ -79,4 +92,5 @@ export const PostControllers = {
     DeletePost,
     UpvotePost,
     DownvotePost,
+    GetPost,
 };
