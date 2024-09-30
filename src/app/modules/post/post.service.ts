@@ -30,9 +30,36 @@ const DeletePostFromDB = async (id: string) => {
     return deletedPost;
 };
 
+const UpVotePostInDB = async (id: string) => {
+    const updatedPost = await Post.findByIdAndUpdate(
+        id,
+        { $inc: { upVotes: 1 } },
+        { new: true }
+    );
+    if (!updatedPost) {
+        throw new AppError(404, "Post not found");
+    }
+    return updatedPost;
+};
+
+const DownVotePostInDB = async (id: string) => {
+    const updatedPost = await Post.findByIdAndUpdate(
+        id,
+        { $inc: { downVotes: 1 } },
+        { new: true }
+    );
+    if (!updatedPost) {
+        throw new AppError(404, "Post not found");
+    }
+    return updatedPost;
+};
+
+
 export const PostServices = {
     CreatePostInDB,
     GetAllPostsFromDB,
     UpdatePostInDB,
     DeletePostFromDB,
+    UpVotePostInDB,
+    DownVotePostInDB,
 };

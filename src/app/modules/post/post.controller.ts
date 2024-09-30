@@ -50,9 +50,33 @@ const DeletePost = catchAsync(async (req, res) => {
     });
 });
 
+const UpvotePost = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = await PostServices.UpVotePostInDB(id);
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Post upVoted successfully",
+        data: result,
+    });
+});
+
+const DownvotePost = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = await PostServices.DownVotePostInDB(id);
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Post downVoted successfully",
+        data: result,
+    });
+});
+
 export const PostControllers = {
     CreatePost,
     GetAllPosts,
     UpdatePost,
     DeletePost,
+    UpvotePost,
+    DownvotePost,
 };
