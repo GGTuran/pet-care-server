@@ -7,6 +7,7 @@ export type TUser = {
   password: string;
   phone: string;
   address: string;
+  image?: string;
   role: TUserRoles;
   followers?: Types.ObjectId[];
   following?: Types.ObjectId[];

@@ -36,4 +36,13 @@ router.delete(
 );
 
 
+router.post(
+    '/followUser',
+    auth('admin', 'user'),
+    UserControllers.followUser);
+router.get(
+    '/getFollowedUsers',
+    auth('admin', 'user'),
+    UserControllers.getFollowedUsers);
+
 export const UserRoutes = router;
