@@ -30,8 +30,8 @@ const GetAllPosts = catchAsync(async (req, res) => {
 
 const GetPost = catchAsync(async (req, res) => {
     const { id } = req.params;
-    // console.log(id, 'from controller')
-    // console.log(req.params, 'from controller')
+    console.log(id, 'from controller')
+    console.log(req.params, 'from controller')
     const result = await PostServices.GetPostsById(id);
     sendResponse(res, {
         success: true,

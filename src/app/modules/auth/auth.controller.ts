@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import config from "../../config";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
@@ -45,8 +46,39 @@ const refreshToken = catchAsync(async (req, res) => {
     });
 })
 
+
+const forgetPassword = catchAsync(async (req, res) => {
+    // console.log(req, 'from controller')
+    const result = await AuthServices.forgetPassword(req.body.email);
+    console.log(req.body.email, 'from controller')
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Reset password link sent successfully',
+        data: result,
+    });
+});
+
+const resetPassword = catchAsync(async (req, res) => {
+
+
+
+    const result = await AuthServices.resetPassword(req);
+
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Password reset successfully',
+        data: result,
+    });
+
+});
+
 export const AuthControllers = {
     signUp,
     login,
     refreshToken,
+    forgetPassword,
+    resetPassword,
 }

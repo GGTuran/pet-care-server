@@ -59,6 +59,7 @@ const DeleteUser = catchAsync(async (req, res) => {
 
 const followUser = catchAsync(async (req, res) => {
     const result = await UserServices.followUser(req);
+    console.log(req)
     sendResponse(res, {
         statusCode: 201,
         success: true,

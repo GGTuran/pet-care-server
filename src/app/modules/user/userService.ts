@@ -70,15 +70,15 @@ const followUser = async (req: Request) => {
     const currentUserId = req?.user?.userId;
     const authorId = req.body.authorId;
 
-    console.log(req?.user?.userId, 'current user id from service')
-    console.log(authorId, 'author id from service')
+    // console.log(req?.user?.userId, 'current user id from service')
+    // console.log(authorId, 'author id from service')
 
 
     const currentUser = await User.findById(currentUserId);
     const author = await User.findById(authorId);
 
-    console.log(currentUser, 'current user  from service')
-    console.log(author, 'author  from service')
+    // console.log(currentUser, 'current user  from service')
+    // console.log(author, 'author  from service')
 
     if (!currentUser) {
         throw new Error('Current user not found.');
@@ -117,10 +117,12 @@ export default followUser;
 
 export const getFollowedUsers = async (req: Request) => {
     const user = req.user;
+    // console.log(user, 'from service')
     if (!user) {
         throw new Error("User not found");
     }
-    const result = await User.find({ _id: user._id }).select("-password").lean().exec();
+    const result = await User.find({ _id: user.userId }).select("-password").lean().exec();
+    // console.log(result, 'from service')
     return result;
 
 };

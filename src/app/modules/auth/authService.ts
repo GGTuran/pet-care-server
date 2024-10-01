@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import config from "../../config";
 import AppError from "../../errors/AppError";
+import { sendEmail } from "../../utils/sendEmail";
 import { TUser } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
@@ -139,10 +140,71 @@ const refreshToken = async (token: string) => {
 
 };
 
+const forgetPassword = async (email: string) => {
+
+    const userEmail = email;
+
+    console.log(email)
+
+
+    const user = await User.findOne({ email: userEmail });
+    console.log(user, 'from service')
+
+    if (!user) {
+        throw new AppError(404, 'User not found');
+    }
+
+    const jwtPayload = {
+        userId: user?._id,
+        email: user?.email,
+        role: user?.role,
+        name: user?.name,
+        phone: user?.phone,
+        address: user?.address,
+        image: user?.image,
+        followers: user?.followers,
+        following: user?.following,
+    };
+
+    const resetToken = jwt.sign(jwtPayload, config.JWT_ACCESS_SECRET as string, {
+        expiresIn: config.jwt_access_expires_in,
+    });
+
+
+    const resetUILink = `${config.reset_ui_link}?id=${user.id}&token=${resetToken} `;
+    sendEmail(user.email, resetUILink);
+
+};
+
+
+const resetPassword = async (req: Request) => {
+    // console.log(req, 'from service')
+
+    const { password, userId } = req.body;
+    const user = await User.findOne({ _id: userId });
+    console.log(userId, 'from service')
+    console.log(user, 'from service')
+    if (!user) {
+        throw new AppError(404, 'User not found');
+    }
+
+    user.password = await bcrypt.hash(
+        password,
+        Number(config.bcrypt_salt_rounds),
+    );
+    await user.save();
+    return user;
+
+
+
+};
+
 
 
 export const AuthServices = {
     signUp,
     loginUser,
     refreshToken,
+    forgetPassword,
+    resetPassword,
 }
