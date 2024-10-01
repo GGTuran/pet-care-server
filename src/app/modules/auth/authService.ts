@@ -177,23 +177,25 @@ const forgetPassword = async (email: string) => {
 };
 
 
-const resetPassword = async (req: Request) => {
-    // console.log(req, 'from service')
+const resetPassword = async (payload: { id: string, password: string }, token: string) => {
 
-    const { password, userId } = req.body;
-    const user = await User.findOne({ _id: userId });
-    console.log(userId, 'from service')
-    console.log(user, 'from service')
-    if (!user) {
-        throw new AppError(404, 'User not found');
-    }
+    const decoded = jwt.verify(
+        token,
+        config.JWT_ACCESS_SECRET as string,
+    ) as JwtPayload;
 
-    user.password = await bcrypt.hash(
-        password,
+    const newPassword = await bcrypt.hash(
+        payload.password,
         Number(config.bcrypt_salt_rounds),
-    );
-    await user.save();
-    return user;
+    )
+
+    const id = decoded?.userId;
+
+    await User.findByIdAndUpdate(id
+        , {
+            password: newPassword,
+        }
+    )
 
 
 
