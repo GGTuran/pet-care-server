@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { USER_ROLE } from "./user.constants";
 
 export type TUser = {
@@ -7,6 +8,8 @@ export type TUser = {
   phone: string;
   address: string;
   role: TUserRoles;
+  followers?: Types.ObjectId[];
+  following?: Types.ObjectId[];
 };
 
 export type TUserRoles = keyof typeof USER_ROLE;

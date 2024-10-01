@@ -17,6 +17,9 @@ const signUp = async (payload: TUser) => {
         name: result?.name,
         phone: result?.phone,
         address: result?.address,
+        image: result?.image,
+        followers: result?.followers,
+        following: result?.following,
     };
 
     const accessToken = jwt.sign(jwtPayload, config.JWT_ACCESS_SECRET as string, {
@@ -31,6 +34,9 @@ const signUp = async (payload: TUser) => {
         name: result?.name,
         phone: result?.phone,
         address: result?.address,
+        image: result?.image,
+        followers: result?.followers,
+        following: result?.following,
     };
 
     const refreshToken = jwt.sign(refreshPayload, config.JWT_REFRESH_SECRET as string, {
@@ -62,6 +68,9 @@ const loginUser = async (payload: TLoginUser) => {
         name: user?.name,
         phone: user?.phone,
         address: user?.address,
+        image: user?.image,
+        followers: user?.followers,
+        following: user?.following,
     };
 
     const accessToken = jwt.sign(jwtPayload, config.JWT_ACCESS_SECRET as string, {
@@ -76,6 +85,9 @@ const loginUser = async (payload: TLoginUser) => {
         name: user?.name,
         phone: user?.phone,
         address: user?.address,
+        image: user?.image,
+        followers: user?.followers,
+        following: user?.following,
     };
 
     const refreshToken = jwt.sign(refreshPayload, config.JWT_REFRESH_SECRET as string, {
@@ -112,6 +124,9 @@ const refreshToken = async (token: string) => {
         name: user?.name,
         phone: user?.phone,
         address: user?.address,
+        image: user?.image,
+        followers: user?.followers,
+        following: user?.following,
     };
 
     const accessToken = jwt.sign(jwtPayload, config.JWT_ACCESS_SECRET as string, {
@@ -123,6 +138,8 @@ const refreshToken = async (token: string) => {
     };
 
 };
+
+
 
 export const AuthServices = {
     signUp,

@@ -4,46 +4,65 @@ import config from "../../config";
 import bcrypt from 'bcrypt';
 
 const userSchema = new Schema<TUser>({
-    name: {
-      type: String,
-      required: true,
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  phone: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  image: {
+    type: String,
+    default: '',
+  },
+  role: {
+    type: String,
+    enum: ['admin', 'user'],
+    default: 'user',
+  },
+  followers: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      default: [],
     },
-    email: {
-      type: String,
-      required: true,
-      unique:true,
+  ],
+  following: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      default: [],
     },
-    password: {
-      type: String,
-      required: true,
-    },
-    phone: {
-      type: String,
-      required: true,
-    },
-    address: {
-      type: String,
-      required: true,
-    },
-    role: {
-      type: String,
-      enum: ['admin', 'user'],
-    },
-  },  {
-    timestamps: true,
-    toJSON:{
-      transform:function(doc,ret){
-        delete ret.password
-        return ret
-      }
+  ],
+}, {
+  timestamps: true,
+  toJSON: {
+    transform: function (doc, ret) {
+      delete ret.password
+      return ret
     }
-  });
+  }
+});
 
-  userSchema.pre('save', async function () {
-    this.password = await bcrypt.hash(
-      this.password,
-      Number(config.bcrypt_salt_rounds),
-    );
-  });
-  
-  export const User = model<TUser>('User', userSchema);
+userSchema.pre('save', async function () {
+  this.password = await bcrypt.hash(
+    this.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+});
+
+export const User = model<TUser>('User', userSchema);
