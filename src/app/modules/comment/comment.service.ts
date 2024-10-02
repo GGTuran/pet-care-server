@@ -19,6 +19,21 @@ const GetCommentsForPostFromDB = async (postId: string) => {
     return comments;
 };
 
+const getCommentById = async (id: string) => {
+    const comments = await Comment.findOne({ id }).populate('author');
+    return comments;
+}
+
+const updateCommentIntoDB = async (id: string, updateData: Partial<TComment>) => {
+    const updatedComment = await Comment.findByIdAndUpdate(id, updateData, {
+        new: true,
+    });
+    if (!updatedComment) {
+        throw new AppError(404, "Post not found");
+    }
+    return updatedComment;
+}
+
 const DeleteCommentFromDB = async (id: string) => {
     const deletedComment = await Comment.findByIdAndDelete(id);
     if (!deletedComment) {
@@ -36,5 +51,7 @@ const DeleteCommentFromDB = async (id: string) => {
 export const CommentServices = {
     CreateCommentInDB,
     GetCommentsForPostFromDB,
+    getCommentById,
     DeleteCommentFromDB,
+    updateCommentIntoDB,
 };
