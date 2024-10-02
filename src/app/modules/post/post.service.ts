@@ -4,14 +4,35 @@ import { initiatePayment, verifyPayment } from "../payment/payment.utils";
 import { TPost } from "./post.interface";
 import { Post } from "./post.model";
 import { User } from "../user/user.model";
+import { Request } from "express";
 
 const CreatePostInDB = async (postData: TPost) => {
     const newPost = await Post.create(postData);
     return newPost;
 };
 
-const GetAllPostsFromDB = async () => {
-    const posts = await Post.find().populate("comments").populate("author").sort({ createdAt: -1 });
+const GetAllPostsFromDB = async (req: Request) => {
+
+    const { category, searchTerm } = req.query;
+
+    // Construct the category filter
+    const categoryQuery = category && category !== 'all' ? { category } : {};
+
+    // Construct the search query using regex for partial matching
+    const searchQuery = searchTerm
+        ? {
+            $or: [
+                { title: { $regex: searchTerm, $options: 'i' } },
+                { content: { $regex: searchTerm, $options: 'i' } },
+                { category: { $regex: searchTerm, $options: 'i' } },
+            ],
+        }
+        : {};
+
+    // Combine both category and search queries
+    const query = { ...categoryQuery, ...searchQuery };
+
+    const posts = await Post.find(query).populate("comments").populate("author").sort({ upVotes: -1 });
     return posts;
 };
 
@@ -97,6 +118,22 @@ const paymentIntoDB = async (id: string) => {
 }
 
 
+const searchPostFromDB = async (searchTerm: string) => {
+    const querySearch = searchTerm
+        ? {
+            $or: [                                                               //using or operator will take all the conditions and apply any of them   
+                { title: { $regex: searchTerm, $options: 'i' } },
+                { content: { $regex: searchTerm, $options: 'i' } },
+                { category: { $regex: searchTerm, $options: 'i' } },
+                // { tags: { $regex: searchTerm, $options: 'i' } },
+            ],
+        }
+        : {};
+    const result = await Post.find(querySearch).populate("comments").populate("author");                              //search by text or fetch all data
+    return result;
+}
+
+
 export const PostServices = {
     CreatePostInDB,
     GetAllPostsFromDB,
@@ -105,7 +142,8 @@ export const PostServices = {
     UpVotePostInDB,
     DownVotePostInDB,
     GetPostsById,
-    paymentIntoDB
+    paymentIntoDB,
+    searchPostFromDB,
 };
 
 

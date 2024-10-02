@@ -82,6 +82,16 @@ const getFollowedUsers = catchAsync(async (req, res) => {
     });
 });
 
+const getPaidUsers = catchAsync(async (req, res) => {
+    const result = await UserServices.getPaidUsersFromDB();
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Fetched users successfully!',
+        data: result,
+    });
+})
+
 
 
 
@@ -93,4 +103,5 @@ export const UserControllers = {
     DeleteUser,
     followUser,
     getFollowedUsers,
+    getPaidUsers,
 }

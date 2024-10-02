@@ -34,6 +34,8 @@ router.patch(
 
 router.patch("/:id/downvote", PostControllers.DownvotePost);
 
-router.post("/payment/:id", PostControllers.payment)
+router.post("/payment/:id", PostControllers.payment);
+
+router.get('/search', PostControllers.searchPost);
 
 export const PostRoutes = router;

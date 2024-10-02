@@ -19,7 +19,7 @@ const CreatePost = catchAsync(async (req, res) => {
 });
 
 const GetAllPosts = catchAsync(async (req, res) => {
-    const result = await PostServices.GetAllPostsFromDB();
+    const result = await PostServices.GetAllPostsFromDB(req);
     sendResponse(res, {
         success: true,
         statusCode: 200,
@@ -87,13 +87,25 @@ const DownvotePost = catchAsync(async (req, res) => {
 
 const payment = catchAsync(async (req, res) => {
     const { id } = req.params;
-    console.log(id, 'from controller')
+
     const result = await PostServices.paymentIntoDB(id);
-    console.log(result, 'from controller');
+
     sendResponse(res, {
         success: true,
         statusCode: 200,
         message: "Payment successful",
+        data: result,
+    });
+})
+
+const searchPost = catchAsync(async (req, res) => {
+    const searchTerm = req.query.searchTerm as string;
+    console.log(searchTerm, 'from controller')
+    const result = await PostServices.searchPostFromDB(searchTerm);
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Post searched successfully",
         data: result,
     });
 })
@@ -106,5 +118,6 @@ export const PostControllers = {
     UpvotePost,
     DownvotePost,
     GetPost,
-    payment
+    payment,
+    searchPost,
 };

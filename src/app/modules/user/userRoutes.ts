@@ -40,11 +40,19 @@ router.delete(
 
 router.post(
     '/followUser',
-    auth('admin', 'user'),
+    auth(USER_ROLE.admin, USER_ROLE.user),
     UserControllers.followUser);
+
+
 router.get(
     '/getFollowedUsers',
-    auth('admin', 'user'),
+    auth(USER_ROLE.admin, USER_ROLE.user),
     UserControllers.getFollowedUsers);
+
+router.get(
+    '/getPaidUsers',
+    auth(USER_ROLE.admin),
+    UserControllers.getPaidUsers,
+)
 
 export const UserRoutes = router;

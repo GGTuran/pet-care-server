@@ -118,7 +118,7 @@ export default followUser;
 
 
 
-export const getFollowedUsers = async (req: Request) => {
+const getFollowedUsers = async (req: Request) => {
     const user = req.user;
     // console.log(user, 'from service')
     if (!user) {
@@ -130,6 +130,11 @@ export const getFollowedUsers = async (req: Request) => {
 
 };
 
+const getPaidUsersFromDB = async () => {
+    const result = await User.find({ isPaid: true });
+    return result;
+}
+
 
 
 export const UserServices = {
@@ -139,5 +144,6 @@ export const UserServices = {
     PromoteUserToAdminInDB,
     DeleteUserFromDB,
     followUser,
-    getFollowedUsers
+    getFollowedUsers,
+    getPaidUsersFromDB,
 }
