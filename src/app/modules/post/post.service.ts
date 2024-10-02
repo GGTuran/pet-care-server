@@ -1,6 +1,9 @@
+
 import AppError from "../../errors/AppError";
+import { initiatePayment, verifyPayment } from "../payment/payment.utils";
 import { TPost } from "./post.interface";
 import { Post } from "./post.model";
+import { User } from "../user/user.model";
 
 const CreatePostInDB = async (postData: TPost) => {
     const newPost = await Post.create(postData);
@@ -8,12 +11,12 @@ const CreatePostInDB = async (postData: TPost) => {
 };
 
 const GetAllPostsFromDB = async () => {
-    const posts = await Post.find().populate("comments").populate("author");
+    const posts = await Post.find().populate("comments").populate("author").sort({ createdAt: -1 });
     return posts;
 };
 
 const GetPostsById = async (id: string) => {
-    const posts = await Post.find({ author: id }).populate("comments").populate("author");
+    const posts = await Post.find({ author: id }).populate("comments").populate("author").sort({ createdAt: -1 });
     return posts;
 }
 
@@ -60,6 +63,40 @@ const DownVotePostInDB = async (id: string) => {
 };
 
 
+const paymentIntoDB = async (id: string) => {
+    const me = await User.findById(id);
+    // console.log(me, 'from service')
+    const userId = me?._id;
+
+    const transactionId = `TXN-${Date.now()}`;
+
+
+    const paymentData = {
+        transactionId,
+        userId,
+        amount: 1000,
+        customerName: me?.name,
+        customerEmail: me?.email,
+        customerPhone: me?.phone,
+        customerAddress: me?.address,
+    };
+
+    // console.log(paymentData, 'from service payment data')
+
+    const paymentSession = await initiatePayment(paymentData);
+
+    const verifyResponse = await verifyPayment(transactionId);
+
+    return {
+        paymentSession,
+        verifyResponse,
+
+    }
+
+
+}
+
+
 export const PostServices = {
     CreatePostInDB,
     GetAllPostsFromDB,
@@ -68,4 +105,13 @@ export const PostServices = {
     UpVotePostInDB,
     DownVotePostInDB,
     GetPostsById,
+    paymentIntoDB
 };
+
+
+
+
+
+
+
+

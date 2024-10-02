@@ -15,6 +15,9 @@ const GetProfile = catchAsync(async (req, res) => {
 });
 
 const UpdateProfile = catchAsync(async (req, res) => {
+    // console.log(req.body.data);
+    // console.log(req.file);
+
     const result = await UserServices.UpdateProfileIntoDB(req);
     sendResponse(res, {
         success: true,
@@ -36,6 +39,7 @@ const GetAllUsers = catchAsync(async (req, res) => {
 
 const PromoteUserToAdmin = catchAsync(async (req, res) => {
     const { id } = req.params;
+    // console.log(id, 'from controller')
     const result = await UserServices.PromoteUserToAdminInDB(id);
     sendResponse(res, {
         success: true,
@@ -59,7 +63,7 @@ const DeleteUser = catchAsync(async (req, res) => {
 
 const followUser = catchAsync(async (req, res) => {
     const result = await UserServices.followUser(req);
-    console.log(req)
+    // console.log(req)
     sendResponse(res, {
         statusCode: 201,
         success: true,

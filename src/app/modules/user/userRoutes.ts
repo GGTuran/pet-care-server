@@ -2,6 +2,7 @@ import express from 'express';
 import { UserControllers } from './user.controller';
 import auth from '../../middlewares/auth';
 import { USER_ROLE } from './user.constants';
+import { multerUpload } from '../../config/multer.config';
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ router.get(
 router.patch(
     '/me',
     auth(USER_ROLE.admin, USER_ROLE.user),
+    multerUpload.single('image'),
     UserControllers.UpdateProfile
 );
 

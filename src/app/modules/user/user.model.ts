@@ -48,6 +48,10 @@ const userSchema = new Schema<TUser>({
       default: [],
     },
   ],
+  isPaid: {
+    type: Boolean,
+    default: false,
+  }
 }, {
   timestamps: true,
   toJSON: {

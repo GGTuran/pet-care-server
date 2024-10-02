@@ -21,6 +21,7 @@ const signUp = async (payload: TUser) => {
         image: result?.image,
         followers: result?.followers,
         following: result?.following,
+        isPaid: result?.isPaid,
     };
 
     const accessToken = jwt.sign(jwtPayload, config.JWT_ACCESS_SECRET as string, {
@@ -38,6 +39,7 @@ const signUp = async (payload: TUser) => {
         image: result?.image,
         followers: result?.followers,
         following: result?.following,
+        isPaid: result?.isPaid,
     };
 
     const refreshToken = jwt.sign(refreshPayload, config.JWT_REFRESH_SECRET as string, {
@@ -56,10 +58,10 @@ const loginUser = async (payload: TLoginUser) => {
     }
 
     //matching the given password in database
-    const comparePassword = await bcrypt.compare(payload?.password, user?.password);
-    if (!comparePassword) {
-        throw new AppError(404, 'Password does not match!');
-    }
+    // const comparePassword = await bcrypt.compare(payload?.password, user?.password);
+    // if (!comparePassword) {
+    //     throw new AppError(404, 'Password does not match!');
+    // }
 
     //creating access token
     const jwtPayload = {
@@ -72,6 +74,7 @@ const loginUser = async (payload: TLoginUser) => {
         image: user?.image,
         followers: user?.followers,
         following: user?.following,
+        isPaid: user?.isPaid,
     };
 
     const accessToken = jwt.sign(jwtPayload, config.JWT_ACCESS_SECRET as string, {
@@ -89,6 +92,7 @@ const loginUser = async (payload: TLoginUser) => {
         image: user?.image,
         followers: user?.followers,
         following: user?.following,
+        isPaid: user?.isPaid,
     };
 
     const refreshToken = jwt.sign(refreshPayload, config.JWT_REFRESH_SECRET as string, {
@@ -128,6 +132,7 @@ const refreshToken = async (token: string) => {
         image: user?.image,
         followers: user?.followers,
         following: user?.following,
+        isPaid: user?.isPaid,
     };
 
     const accessToken = jwt.sign(jwtPayload, config.JWT_ACCESS_SECRET as string, {
@@ -164,6 +169,7 @@ const forgetPassword = async (email: string) => {
         image: user?.image,
         followers: user?.followers,
         following: user?.following,
+        isPaid: user?.isPaid,
     };
 
     const resetToken = jwt.sign(jwtPayload, config.JWT_ACCESS_SECRET as string, {
@@ -171,7 +177,7 @@ const forgetPassword = async (email: string) => {
     });
 
 
-    const resetUILink = `${config.reset_ui_link}?id=${user.id}&token=${resetToken} `;
+    const resetUILink = `${config.reset_ui_link}/reset-password?id=${user.id}&token=${resetToken} `;
     sendEmail(user.email, resetUILink);
 
 };

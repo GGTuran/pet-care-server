@@ -15,7 +15,7 @@ const CreateCommentInDB = async (commentData: TComment) => {
 };
 
 const GetCommentsForPostFromDB = async (postId: string) => {
-    const comments = await Comment.find({ postId });
+    const comments = await Comment.find({ postId }).populate('author');
     return comments;
 };
 

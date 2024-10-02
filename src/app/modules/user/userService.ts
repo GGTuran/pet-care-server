@@ -18,7 +18,10 @@ const GetProfileFromDB = async (req: Request) => {
 const UpdateProfileIntoDB = async (req: Request) => {
     //getting the data from token
     const user = req.user;
-    const updatedData = req.body;
+    const updatedData = {
+        ...JSON.parse(req.body.data),  // Parse the form data
+        ...(req.file && { image: req.file.path })  // If an image file is uploaded, add the image path
+    };
     const findUser = await User.findById(user?.userId);
     // console.log('service', findUser)
 
@@ -36,7 +39,7 @@ const UpdateProfileIntoDB = async (req: Request) => {
 };
 
 const GetAllUsersFromDB = async () => {
-    const result = await User.find({ role: 'user' });
+    const result = await User.find();
     return result;
 };
 
@@ -121,7 +124,7 @@ export const getFollowedUsers = async (req: Request) => {
     if (!user) {
         throw new Error("User not found");
     }
-    const result = await User.find({ _id: user.userId }).select("-password").lean().exec();
+    const result = await User.find({ _id: user.userId }).select("-password").populate('followers').populate('following').lean().exec();
     // console.log(result, 'from service')
     return result;
 

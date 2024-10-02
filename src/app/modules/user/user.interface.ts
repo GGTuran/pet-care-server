@@ -11,6 +11,7 @@ export type TUser = {
   role: TUserRoles;
   followers?: Types.ObjectId[];
   following?: Types.ObjectId[];
+  isPaid?: boolean;
 };
 
 export type TUserRoles = keyof typeof USER_ROLE;

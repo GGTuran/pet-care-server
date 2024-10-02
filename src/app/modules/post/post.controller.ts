@@ -4,8 +4,8 @@ import sendResponse from "../../utils/sendResponse";
 import { PostServices } from "./post.service";
 
 const CreatePost = catchAsync(async (req, res) => {
-    console.log(req.body.data);
-    console.log(req.file);
+    // console.log(req.body.data);
+    // console.log(req.file);
     const result = await PostServices.CreatePostInDB({
         ...JSON.parse(req?.body?.data),
         image: req.file?.path,
@@ -85,6 +85,19 @@ const DownvotePost = catchAsync(async (req, res) => {
     });
 });
 
+const payment = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    console.log(id, 'from controller')
+    const result = await PostServices.paymentIntoDB(id);
+    console.log(result, 'from controller');
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Payment successful",
+        data: result,
+    });
+})
+
 export const PostControllers = {
     CreatePost,
     GetAllPosts,
@@ -93,4 +106,5 @@ export const PostControllers = {
     UpvotePost,
     DownvotePost,
     GetPost,
+    payment
 };

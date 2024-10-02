@@ -12,6 +12,7 @@ const createUserZod = z.object({
     image: z.string().optional(),
     followers: z.string().array().optional(),
     following: z.string().array().optional(),
+    isPaid: z.boolean().optional(),
   }),
 });
 
@@ -26,6 +27,7 @@ const updateUserZod = z.object({
     image: z.string().optional(),
     followers: z.string().array().optional(),
     following: z.string().array().optional(),
+    isPaid: z.boolean().optional(),
   }),
 });
 
