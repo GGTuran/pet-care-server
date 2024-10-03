@@ -149,11 +149,11 @@ const forgetPassword = async (email: string) => {
 
     const userEmail = email;
 
-    console.log(email)
+    // console.log(email)
 
 
     const user = await User.findOne({ email: userEmail });
-    console.log(user, 'from service')
+    // console.log(user, 'from service')
 
     if (!user) {
         throw new AppError(404, 'User not found');

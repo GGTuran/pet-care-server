@@ -30,8 +30,8 @@ const GetAllPosts = catchAsync(async (req, res) => {
 
 const GetPost = catchAsync(async (req, res) => {
     const { id } = req.params;
-    console.log(id, 'from controller')
-    console.log(req.params, 'from controller')
+    // console.log(id, 'from controller')
+    // console.log(req.params, 'from controller')
     const result = await PostServices.GetPostsById(id);
     sendResponse(res, {
         success: true,
@@ -100,7 +100,7 @@ const payment = catchAsync(async (req, res) => {
 
 const searchPost = catchAsync(async (req, res) => {
     const searchTerm = req.query.searchTerm as string;
-    console.log(searchTerm, 'from controller')
+    // console.log(searchTerm, 'from controller')
     const result = await PostServices.searchPostFromDB(searchTerm);
     sendResponse(res, {
         success: true,

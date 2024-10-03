@@ -6,6 +6,12 @@ import { AuthServices } from "./authService";
 
 const signUp = catchAsync(async (req, res) => {
     const result = await AuthServices.signUp(req.body);
+    res.cookie('refreshToken', refreshToken, {
+        secure: config.NODE_ENV === 'production',
+        httpOnly: true,
+        sameSite: 'none',
+        maxAge: 1000 * 60 * 60 * 24 * 365,
+    });
     sendResponse(res, {
         success: true,
         statusCode: 201,

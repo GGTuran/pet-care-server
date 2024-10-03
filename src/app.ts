@@ -10,7 +10,7 @@ const app: Application = express();
 
 app.use(express.json());
 app.use(cookieParser())
-app.use(cors({ origin: 'http://localhost:3000', credentials: true, methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', }));
+app.use(cors({ origin: 'https://pawprints-and-tales.vercel.app', credentials: true, methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', }));
 
 
 app.get("/", (req: Request, res: Response) => {
