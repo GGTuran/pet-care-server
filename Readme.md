@@ -1,5 +1,3 @@
-# Bike Rental System Backend
-
 ## Pawprints & Tales provides a comprehensive backend server to manage and rent pets, ensuring a seamless experience for pet owners and enthusiasts. This system allows users to rent pets for a period, with flexible return options and secure payments, making it ideal for fostering or short-term pet care needs. It’s especially beneficial for those who love animals but cannot commit long-term.The server offers exciting features such as robust authentication and authorization to secure user data, admin-controlled pet management to ensure proper care and availability, and a streamlined rental process. This system is designed to provide peace of mind for both users and pet managers while fostering deeper connections with animals.
 
 ## Live URL
@@ -41,7 +39,7 @@ API Endpoints:
 
 ```bash
 git clone  https://github.com/GGTuran/pet-care-server
-cd bike-rental-service-server
+cd pet-care-server
 ```
 
 **Now install the dependencies of the project:**
